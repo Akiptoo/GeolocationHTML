@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>geolocation</title>
+
+
+    <!--jquery link-->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <!--google map api-->
+    <!--fetches the map-->
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+    <script>
+
+        //Function that shows the position
+        function showPosition() {
+            if (navigator.geolocation) { //property that gives web content access to the location of the device
+                navigator.geolocation.getCurrentPosition(success, failure); // block of code to be executed if the condition is true or false
+            } else {
+                alert("Sorry, your browser does not support HTML5 geolocation."); // if the condition is false, should show this error
+            }
+        }
+
+        // If the code successfully fetches the latitude and longitude
+        function success(position) {
+
+            //fetch coordinates, for the longitude and latitude
+
+            var mylat = position.coords.latitude;
+            var mylong = position.coords.longitude;
+
+            //These lines of code overrides the div id's on the body section
+
+
+            $('#lat').html(mylat);
+            $('#long').html(mylong);
+
+
+            //google api-ready latitude and longitude string
+            var coords = new google.maps.LatLng(mylat, mylong); // google api
+
+            // setting up our google map
+            var mapOptions = { // declares a variable called mapOPtions which will be used for the map
+                zoom: 16,
+                center: coords,
+                mapTypeId: google.maps.MapTypeId.ROADMAP, //could be a satellite map or a roadmap
+            }
+
+            //creating the map
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);//getElementById is a method used to return an element thathas the ID attribute(map) with a specified valiue 
+            var marker = new google.maps.Marker({ position: coords, map: map, title: "You are here!" }); //shows the marker on the map
+        }
+        //If the code fails to fetch the latitude and longitude
+        function failure() {
+            $('#lat').html("<p>Hello, you've blocked this site from sharing your location!</p>");
+        }
+    </script>
+
+</head>
+
+<!--style for the map-->
+<style>
+    body {
+        background-color: darkblue;
+
+    }
+
+    .btn {
+        text-align: center;
+    }
+
+    .button {
+        position: relative;
+        top: 30%;
+        border-radius: 14px;
+        font-size: large;
+    }
+
+    #lat {
+        padding-top: 20px;
+        color: white;
+        font-size: large;
+    }
+    #long{
+        color: whitesmoke;
+        font-size: large;
+    }
+
+    H1 {
+        text-align: center;
+        color: white;
+    }
+    p{
+        color:white;
+        font-size: large;
+    }
+
+ 
+</style>
+
+<body>
+    <h1>HTML5 GEOLOCATION</h1>
+
+    <div class="btn">
+        <button class="button " onclick="showPosition();">Click Here to view your Position on Google Map</button>
+
+    </div>
+    <!-- <img src="images/geo2.jpg" alt=""> -->
+
+    <!--Map Placeholder-->
+    <div id="map" style="width: 401px; height: 300px;">
+        <!--Google map will be embedded here-->
+    </div>
+
+    <!--Longitude and Latitude-->
+    <div id="lat"></div>
+    <div id="long"></div>
+
+
+
+</body>
+
+</html>
